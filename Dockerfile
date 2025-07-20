@@ -1,6 +1,4 @@
-#FROM registry.cn-heyuan.aliyuncs.com/lusyoe/nginx:alpine
-#FROM nginx:alpine
-FROM harbor.luhome.com/library/nginx:alpine
+FROM nginx:alpine
 
 ENV TZ=Asia/Shanghai
 
