@@ -1,0 +1,57 @@
+---
+# Friends Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: friends-frontend-deployment
+  labels:
+    app: friends-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: friends-frontend
+  template:
+    metadata:
+      labels:
+        app: friends-frontend
+    spec:
+      containers:
+      - name: friends-frontend
+        image: registry-vpc.cn-heyuan.aliyuncs.com/lusyoe/friends-frontend:TAG
+        ports:
+        - containerPort: 80
+
+---
+# Friends Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: friends-frontend-service
+spec:
+  selector:
+    app: friends-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+# Friends Frontend Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: friends-frontend-ingress
+spec:
+  rules:
+  - host: friends.lusyoe.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: friends-frontend-service
+            port:
+              number: 80
